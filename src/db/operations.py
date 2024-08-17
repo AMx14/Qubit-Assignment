@@ -1,5 +1,5 @@
 from sqlalchemy.exc import SQLAlchemyError
-from db.models import Company, EnrichedCompany, get_engine, get_session
+from .models import Company, EnrichedCompany, get_engine, get_session
 
 # Create engine and session
 engine = get_engine()

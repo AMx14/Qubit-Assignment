@@ -1,6 +1,5 @@
-from api.client import LinkedInDataFetcher
-from db.operations import update_enriched_company
-
+from .client import LinkedInDataFetcher
+from ..db.operations import update_enriched_company
 
 def enrich_company_data(company_id, linkedin_url):
     fetcher = LinkedInDataFetcher()

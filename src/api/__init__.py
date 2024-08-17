@@ -1,9 +1,9 @@
-from .client import fetch_enriched_data
-from .enrich import enrich_and_store_data
+from .client import LinkedInDataFetcher
+from .enrich import enrich_company_data
 from .filters import filter_data
 
 __all__ = [
-    "fetch_enriched_data",
-    "enrich_and_store_data",
+    "LinkedInDataFetcher",
+    "enrich_company_data",
     "filter_data",
 ]

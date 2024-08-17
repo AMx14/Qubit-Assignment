@@ -1,36 +1,18 @@
-import requests
 import os
+from sqlalchemy import create_engine
 from dotenv import load_dotenv
 
-# Load environment variables from the .env file
+# Load environment variables from a .env file
 load_dotenv()
 
-def fetch_company_data_from_api(linkedin_url):
-    api_url = "https://linkedin-bulk-data-scraper.p.rapidapi.com/person_data_with_educations"
-    headers = {
-        "Content-Type": "application/json",
-        "x-rapidapi-host": "linkedin-bulk-data-scraper.p.rapidapi.com",
-        "x-rapidapi-key": os.getenv('RAPIDAPI_KEY')
-    }
-    payload = {"link": linkedin_url}
+# Construct the database connection URL
+engine_url = f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+print(f"Connecting to: mysql+pymysql://{os.getenv('DB_USER')}:****@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}")
 
-    try:
-        response = requests.post(api_url, json=payload, headers=headers)
-        if response.status_code == 200:
-            try:
-                return response.json()  # Assuming the response is in JSON format
-            except ValueError:
-                print("Response is not in JSON format.")
-                return None
-        else:
-            print(f"API connection failed with status code {response.status_code}")
-            return None
-    except requests.RequestException as e:
-        print(f"An error occurred: {e}")
-        return None
-
-if __name__ == "__main__":
-    linkedin_company_url = "http://www.linkedin.com/company/aep-energy"
-    company_data = fetch_company_data_from_api(linkedin_company_url)
-    if company_data:
-        print(company_data)  # This will print out the enriched company data
+try:
+    # Create an SQLAlchemy engine
+    engine = create_engine(engine_url)
+    with engine.connect() as connection:
+        print("Successfully connected to the database.")
+except Exception as e:
+    print(f"Error connecting to the database: {e}")
